@@ -44,8 +44,13 @@ var lastVideoId: string | undefined = undefined
 setInterval(async () => {
     var date = new Date()
     date.setMinutes(date.getMinutes() - 10)
-    console.log(interval)
-    lastVideoId = await fetch(date,lastVideoId)
+    try {
+        lastVideoId = await fetch(date, lastVideoId)
+    } catch (e) {
+        console.log(
+            'The DB Has not been populated yet please sun the migrate command to start fetching'
+        )
+    }
 }, interval * 1000)
 
 /** Server */
