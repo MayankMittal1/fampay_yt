@@ -5,7 +5,7 @@ var max_res: number = +(process.env.MAX_ENTRIES_PER_PAGE as string)
 const prisma = new PrismaClient()
 
 const search = async (req: Request, res: Response, next: NextFunction) => {
-    var page: number = +req.params.page
+    var page: number = (req.params.page)?(+req.params.page):1
     var query = await prisma.video.findMany({
         where: {
             OR: {
@@ -33,7 +33,7 @@ const search = async (req: Request, res: Response, next: NextFunction) => {
 }
 
 const getAll = async (req: Request, res: Response, next: NextFunction) => {
-    var page: number = +req.params.page
+    var page: number = (req.params.page)?(+req.params.page):1
     var query = await prisma.video.findMany({
         orderBy: [
             {
