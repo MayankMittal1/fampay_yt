@@ -1,9 +1,8 @@
 import http from 'http'
 import express, { Express } from 'express'
 import morgan from 'morgan'
-import { PrismaClient } from '@prisma/client'
 import bodyParser from 'body-parser'
-const prisma = new PrismaClient()
+import apiRouter from './routes/api'
 const router: Express = express()
 
 router.use(morgan('dev'))
@@ -26,7 +25,7 @@ router.use((req, res, next) => {
 })
 
 /** Routes */
-// router.use('/api', apiRouter)
+router.use('/api', apiRouter)
 
 /** Error handling */
 router.use((req, res, next) => {

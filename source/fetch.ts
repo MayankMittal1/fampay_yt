@@ -5,7 +5,7 @@ import 'dotenv/config'
 var KEY = process.env.KEY
 var param = process.env.PARAM
 var interval: number = +(process.env.FETCH_INTERVAL as string)
-var lastvideoid: string | undefined = undefined
+var lastVideoId: string | undefined = undefined
 async function fetch(date: Date) {
     var res = await axios.get(
         `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=date&publishedAfter=${date.toISOString()}&q=${param}&key=${KEY}`
@@ -21,7 +21,7 @@ async function fetch(date: Date) {
 
     for (let i = 0; i < items.length; i++) {
         let e = items.at(i)
-        if (e && lastvideoid == e.id.videoId) break
+        if (e && lastVideoId == e.id.videoId) break
         if (e)
             await prisma.video.create({
                 data: {
@@ -32,7 +32,7 @@ async function fetch(date: Date) {
                 },
             })
     }
-    lastvideoid = items.at(0)?.id.videoId
+    lastVideoId = items.at(0)?.id.videoId
 }
 
 setInterval(async () => {
