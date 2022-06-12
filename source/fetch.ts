@@ -4,9 +4,7 @@ import axios, { AxiosResponse } from 'axios'
 import 'dotenv/config'
 var KEY = process.env.KEY
 var param = process.env.PARAM
-var interval: number = +(process.env.FETCH_INTERVAL as string)
-var lastVideoId: string | undefined = undefined
-async function fetch(date: Date) {
+async function fetch(date: Date, lastVideoId: string | undefined) {
     var res = await axios.get(
         `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=date&publishedAfter=${date.toISOString()}&q=${param}&key=${KEY}`
     )
@@ -32,11 +30,6 @@ async function fetch(date: Date) {
                 },
             })
     }
-    lastVideoId = items.at(0)?.id.videoId
+    return items.at(0)?.id.videoId
 }
-
-setInterval(async () => {
-    var date = new Date()
-    date.setMinutes(date.getMinutes() - 10)
-    await fetch(date)
-}, interval * 1000)
+export = fetch
