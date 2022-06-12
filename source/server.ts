@@ -3,6 +3,7 @@ import express, { Express } from 'express'
 import morgan from 'morgan'
 import bodyParser from 'body-parser'
 import apiRouter from './routes/api'
+import fetch from './fetch'
 const router: Express = express()
 
 router.use(morgan('dev'))
@@ -34,6 +35,18 @@ router.use((req, res, next) => {
         message: error.message,
     })
 })
+
+/**
+ Fetch API
+ **/
+var interval: number = +(process.env.FETCH_INTERVAL as string)
+var lastVideoId: string | undefined = undefined
+setInterval(async () => {
+    var date = new Date()
+    date.setMinutes(date.getMinutes() - 10)
+    console.log(interval)
+    lastVideoId = await fetch(date,lastVideoId)
+}, interval * 1000)
 
 /** Server */
 const httpServer = http.createServer(router)
