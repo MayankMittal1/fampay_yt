@@ -5,7 +5,10 @@ import 'dotenv/config'
 var KEYS: Array<string> = JSON.parse(process.env.KEY as string)
 var PARAM = process.env.PARAM
 var key = 0
-async function fetch(date: Date, lastVideoId: string | undefined) {
+async function fetch(
+    date: Date,
+    lastVideoId: string | undefined
+): Promise<string | undefined> {
     try {
         var res = await axios.get(
             `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=date&publishedAfter=${date.toISOString()}&q=${PARAM}&key=${
@@ -14,8 +17,10 @@ async function fetch(date: Date, lastVideoId: string | undefined) {
         )
     } catch (e) {
         console.log(e)
-        if (key < KEYS.length - 1) key += 1
-        else
+        if (key < KEYS.length - 1) {
+            key += 1
+            return fetch(date, lastVideoId)
+        } else
             console.log('All API key limits are exhausted, please add new keys')
         return undefined
     }
