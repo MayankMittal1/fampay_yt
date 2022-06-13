@@ -2,12 +2,23 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 import axios, { AxiosResponse } from 'axios'
 import 'dotenv/config'
-var KEY = process.env.KEY
-var param = process.env.PARAM
+var KEYS: Array<string> = JSON.parse(process.env.KEY as string)
+var PARAM = process.env.PARAM
+var key = 0
 async function fetch(date: Date, lastVideoId: string | undefined) {
-    var res = await axios.get(
-        `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=date&publishedAfter=${date.toISOString()}&q=${param}&key=${KEY}`
-    )
+    try {
+        var res = await axios.get(
+            `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&order=date&publishedAfter=${date.toISOString()}&q=${PARAM}&key=${
+                KEYS[key]
+            }`
+        )
+    } catch (e) {
+        console.log(e)
+        if (key < KEYS.length - 1) key += 1
+        else
+            console.log('All API key limits are exhausted, please add new keys')
+        return undefined
+    }
     var items: Array<{
         snippet: {
             description: string

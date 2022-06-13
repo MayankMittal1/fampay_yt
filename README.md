@@ -7,7 +7,7 @@ Copy the ```.env.sample``` to ```.env``` and poulate it with the required values
 
 DATABASE_URL is the connection string of the database, it is prepolulated and needs not to be changes as it is in sync with the docker image of the database.
 
-KEY is the google API key
+KEY is an array of google API keys
 
 PARAM is the parameter which youtube is to be scraped for
 

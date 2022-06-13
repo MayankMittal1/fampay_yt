@@ -48,7 +48,7 @@ setInterval(async () => {
         lastVideoId = await fetch(date, lastVideoId)
     } catch (e) {
         console.log(
-            'The DB Has not been populated yet please sun the migrate command to start fetching'
+            'The DB Has not been populated yet please run the migrate command to start fetching'
         )
     }
 }, interval * 1000)
