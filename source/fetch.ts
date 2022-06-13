@@ -35,6 +35,7 @@ async function fetch(
 
     for (let i = 0; i < items.length; i++) {
         let e = items.at(i)
+        //if api fetches a video multiple times, the subsequesnt videos are already present in database hence operation is terminated
         if (e && lastVideoId == e.id.videoId) break
         if (e)
             await prisma.video.create({
